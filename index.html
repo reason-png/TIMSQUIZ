@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TIMS初階行銷企劃證照_題庫訓練</title>
+    <title>TIMS初階行銷企劃_題庫訓練</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <!-- Load Firebase (Required by guidelines, although this app is local-storage based) --><script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
@@ -40,16 +40,25 @@
     <style>
         /* --- Macaron Colors Palette and Typography (調整為更活潑的色調) --- */
         :root {
+            /* Light Mode Defaults */
             --color-primary: #FFB7C5; /* Vibrant Pink (主色調) */
             --color-secondary: #A9E4D9; /* Brighter Mint Green (輔助色調) */
             --color-background: #F7FBFD; /* Very Light Blue-White (背景色) */
             --color-text: #2c3e50; /* Darker Blue Text for contrast */
             --color-text-light: #7f8c8d;
+            --color-container-bg: white;
+            --color-internal-bg: var(--color-yellow);
+            --color-input-bg: white;
+
             --color-correct: #83E8C1; /* Brighter Success Green (用於高分鼓勵區) */
             --color-incorrect: #FF99A4; /* Brighter Error Red/Pink (用於低分鼓勵區) */
             --color-yellow: #FFECB3; /* Brighter Pale Yellow */
             --color-blue: #B3D4FF; /* Brighter Pale Blue */
             --color-purple: #D0B3FF; /* Brighter Pale Purple */
+            --color-light-correct: #E8FBF5; /* Very Light Mint Green */
+            --color-light-incorrect: #FFE8EB; /* Very Light Pink */
+            --color-border: #eee;
+
 
             /* Font Sizes for adjustment */
             --font-s: 0.9rem;
@@ -58,6 +67,24 @@
             --font-xl: 1.35rem;
             --font-xxl: 1.6rem;
             --current-font-size: var(--font-m);
+        }
+
+        /* --- Dark Mode Styles --- */
+        body.dark-mode {
+            /* Base Colors */
+            --color-primary: #FFB7C5; /* Vibrant Pink (Still bright) */
+            --color-secondary: #79a8a0; /* Deeper Mint Green */
+            --color-background: #1e272e; /* Dark Blue-Gray */
+            --color-text: #ecf0f1; /* Light Gray Text */
+            --color-text-light: #bdc3c7; /* Slightly darker light text */
+            --color-container-bg: #2c3e50; /* Darker container */
+            --color-internal-bg: #34495e; /* Dark blue/gray internal components */
+            --color-input-bg: #2c3e50;
+            --color-yellow: #a7884c; /* Darker Pale Yellow */
+            --color-blue: #5375a0; /* Darker Pale Blue */
+            --color-light-correct: #4b6d63; /* Darker Mint */
+            --color-light-incorrect: #6d424b; /* Darker Pink */
+            --color-border: #4a637d;
         }
 
         body {
@@ -71,18 +98,24 @@
             justify-content: center;
             align-items: flex-start;
             padding-top: 20px;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         /* Main container styling (增加陰影深度) */
         .container {
             width: 95%;
             max-width: 800px;
-            background-color: white;
+            background-color: var(--color-container-bg);
             padding: 30px;
             border-radius: 25px; 
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1); /* 更深的陰影 */
             margin-bottom: 30px;
             position: relative;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+        
+        .dark-mode .container {
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
         }
 
         /* --- Global Elements & Typography --- */
@@ -105,15 +138,13 @@
 
         /* 確保 Logo 在手機上也能良好對齊 */
         .main-title img {
-            max-width: 40px; /* V5: 設置最大寬度，讓高度依比例自動調整 */
-            height: auto;    /* V5: 移除固定高度 */
-            object-fit: contain; /* V5: 確保圖片保持縱橫比 */
-            /* V6 關鍵修改：移除圓角和陰影，消除邊線效果 */
-            border-radius: 0; /* 移除圓角 */
-            box-shadow: none; /* 移除陰影 */
-            border: none; /* 確保沒有邊框 */
+            max-width: 40px; 
+            height: auto;    
+            object-fit: contain; 
+            border-radius: 0; 
+            box-shadow: none; 
+            border: none; 
         }
-
 
         /* Apply adjustable font size to relevant text elements */
         .adjustable-text {
@@ -135,11 +166,17 @@
             transition: all 0.2s ease-in-out;
             box-shadow: 0 6px 0 rgba(0, 0, 0, 0.15); /* 更深的按鈕陰影 */
             text-align: center;
+            color: var(--color-text); /* Ensure dark text on default light button */
         }
+        
+        .dark-mode .btn {
+            color: #1e272e; /* Dark text on light button in dark mode */
+            box-shadow: 0 6px 0 rgba(255, 255, 255, 0.1);
+        }
+
 
         .btn-primary {
             background-color: var(--color-secondary); 
-            color: var(--color-text);
             border: 1px solid #7bc6b9; /* 新增邊框 */
         }
 
@@ -149,13 +186,17 @@
             transform: translateY(3px); /* 更有彈性的按壓效果 */
         }
 
+        .dark-mode .btn-primary { 
+            background-color: var(--color-secondary); 
+            border: 1px solid #5c7e9f; 
+        }
+
         .btn-nav {
             padding: 15px 30px; 
             font-size: 1.1rem;
             background-color: var(--color-blue);
-            color: var(--color-text);
-            box-shadow: 0 6px 0 rgba(0, 0, 0, 0.15);
             border: 1px solid #85aee8;
+            color: var(--color-text); /* Light mode text */
         }
 
         .btn-nav:hover {
@@ -163,12 +204,29 @@
             box-shadow: 0 3px 0 rgba(0, 0, 0, 0.1);
             transform: translateY(3px);
         }
+        
+        /* --- 修正 Dark Mode 下的導航按鈕樣式 --- */
+        .dark-mode .btn-nav { 
+            /* 使用更亮的輔助色調，提高對比度 */
+            background-color: #ecf0f1; /* 亮白色/淺灰色 */
+            /* 使用主色調邊框，使其突出 */
+            border: 2px solid var(--color-primary); 
+            color: #1e272e; /* 修正: 在亮色背景上使用極深色文字，確保可讀性 */
+            /* 調整陰影以匹配暗色系 */
+            box-shadow: 0 6px 0 var(--color-primary); 
+        }
+        
+        .dark-mode .btn-nav:hover {
+            background-color: #bdc3c7; /* 懸停時略微變暗 */
+            box-shadow: 0 3px 0 var(--color-primary);
+            color: #1e272e; /* 確保懸停時也是深色文字 */
+        }
+        /* --- 修正結束 --- */
 
         /* --- 新增/調整 交卷按鈕樣式 --- */
         .btn-submit {
             /* 使用更深的粉色/主色調，使其在導航中突出 */
             background-color: var(--color-primary); 
-            color: var(--color-text);
             font-size: 1.1rem;
             font-weight: 700; /* 加粗字體 */
             box-shadow: 0 6px 0 rgba(255, 183, 197, 0.6); /* 專屬的按鈕陰影 */
@@ -186,6 +244,11 @@
             box-shadow: 0 3px 0 rgba(255, 183, 197, 0.4);
             transform: translateY(3px);
         }
+        
+        .dark-mode .btn-submit { 
+            background-color: var(--color-primary); 
+            border: 1px solid #e89fb0;
+        }
         /* --- 結束 交卷按鈕樣式調整 --- */
 
         .btn:disabled {
@@ -194,16 +257,16 @@
             box-shadow: none;
             transform: none;
         }
-
-        /* --- Header and Font Size Control --- */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
+        
+        /* Dark Mode Disabled Button (修正對比度) */
+        .dark-mode .btn:disabled {
+            background-color: #5375a0; /* Darker blue shade */
+            color: #bdc3c7; /* Light text */
+            border: 1px solid #4a637d;
         }
 
-        /* 調整 Header 佈局以適應新的大標題 */
+
+        /* --- Header and Font Size Control --- */
         .header {
             flex-direction: column;
             align-items: stretch;
@@ -218,16 +281,31 @@
             gap: 10px;
             padding: 8px 15px;
             border-radius: 15px;
-            background-color: white; /* <-- 白色 */
+            background-color: var(--color-container-bg); /* Use container bg variable */
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
             margin-top: 15px; /* 標題下方留空 */
-            border: 1px solid #eee; /* 增加輕微邊框使其與背景區分 */
+            border: 1px solid var(--color-border); /* 增加輕微邊框使其與背景區分 */
+            transition: background-color 0.3s, border-color 0.3s;
         }
         
+        .dark-mode .font-size-control {
+            background-color: #34495e; /* Darker internal component bg */
+        }
+
         .font-size-control label {
             font-weight: 600;
             font-size: 0.9rem;
             color: var(--color-text-light);
+        }
+        
+        .font-size-control select {
+            background-color: var(--color-input-bg);
+            color: var(--color-text);
+            border: 1px solid var(--color-border);
+            padding: 5px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         /* --- Home Screen (Filtering) --- */
@@ -236,6 +314,12 @@
             padding: 20px;
             border-radius: 15px;
             background-color: var(--color-yellow);
+            transition: background-color 0.3s;
+        }
+        
+        .dark-mode .filter-group {
+            background-color: var(--color-internal-bg);
+            border: 1px solid var(--color-border);
         }
 
         .filter-options {
@@ -248,7 +332,7 @@
         .checkbox-label {
             display: block;
             padding: 10px;
-            background-color: white;
+            background-color: var(--color-input-bg);
             border: 2px solid #cccccc; 
             color: var(--color-text-light); 
             border-radius: 10px;
@@ -265,6 +349,16 @@
             box-shadow: 0 0 10px rgba(255, 183, 197, 0.9); /* Brighter glow */
         }
         
+        .dark-mode .checkbox-label {
+             background-color: #2c3e50;
+             border-color: #5c7e9f;
+             color: var(--color-text-light);
+        }
+        
+        .dark-mode input[type="checkbox"]:checked + .checkbox-label {
+            color: #1e272e; /* Dark text on light button */
+        }
+
         input[type="checkbox"] {
             display: none; 
         }
@@ -278,18 +372,17 @@
             margin-top: 20px;
             /* 增加一個小陰影 */
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: background-color 0.3s;
         }
 
         /* --- Quiz Screen --- */
-        /* 移除 flex-start 讓它回到正常的靠左或置中，因為內容已經被移除 */
         .quiz-header {
             display: flex;
-            justify-content: center; /* 讓它置中或根據剩餘內容調整 */
+            justify-content: center; 
             align-items: center;
             margin-bottom: 20px;
             padding: 10px 0;
             border-bottom: 2px solid var(--color-primary);
-            /* 由於內部元素被移除，這裡可以保持彈性或調整 */
             min-height: 10px; 
         }
         
@@ -299,18 +392,26 @@
             flex-wrap: wrap;
             justify-content: center;
             gap: 8px;
-            margin-bottom: 25px;
+            margin-bottom: 25px; /* 題號導航與下一排按鈕的間距 */
+            margin-top: 25px; /* 題號導航與題卡之間的間距 */
             padding: 15px;
             background-color: var(--color-background); 
             border-radius: 15px;
             box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.05);
+            transition: background-color 0.3s;
         }
+        
+        .dark-mode #question-index-nav {
+            background-color: #2c3e50;
+            box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
+        }
+
 
         .index-btn {
             width: 35px;
             height: 35px;
             border-radius: 50%;
-            background-color: white;
+            background-color: var(--color-input-bg);
             color: var(--color-text);
             border: 2px solid var(--color-secondary);
             font-weight: 600;
@@ -321,6 +422,13 @@
             justify-content: center;
             font-size: 0.9rem;
             box-shadow: 0 3px 0 rgba(0, 0, 0, 0.1);
+        }
+        
+        .dark-mode .index-btn {
+            background-color: #1e272e;
+            border-color: #5375a0;
+            color: var(--color-text);
+            box-shadow: 0 3px 0 rgba(255, 255, 255, 0.1);
         }
         
         .index-btn:hover {
@@ -342,14 +450,25 @@
             background-color: var(--color-secondary);
             border-color: #7bc6b9;
         }
+        
+        .dark-mode .index-btn.answered-index:not(.active-index) {
+            background-color: var(--color-secondary);
+            border-color: #5c7e9f;
+            color: #1e272e;
+        }
 
         .quiz-card {
-            background-color: var(--color-yellow);
+            background-color: var(--color-internal-bg);
             padding: 25px;
             border-radius: 20px;
-            margin-bottom: 25px;
-            /* 增加一個小陰影 */
+            margin-bottom: 0; 
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: background-color 0.3s;
+        }
+        
+        .dark-mode .quiz-card {
+            background-color: var(--color-internal-bg);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
         .question-text {
@@ -370,17 +489,27 @@
             display: flex;
             align-items: center;
             padding: 15px;
-            background-color: white;
+            background-color: var(--color-input-bg);
             border: 2px solid var(--color-secondary);
             border-radius: 15px;
             cursor: pointer;
             transition: all 0.2s;
         }
         
+        .dark-mode .option-label {
+            background-color: var(--color-input-bg);
+            border-color: #5c7e9f;
+        }
+        
         .option-label:hover {
             background-color: #f7ffff;
             box-shadow: 0 0 10px rgba(199, 233, 232, 0.8);
         }
+        
+        .dark-mode .option-label:hover {
+            background-color: #3f5973;
+        }
+
 
         input[type="radio"]:checked + .option-label {
             background-color: var(--color-secondary);
@@ -388,6 +517,11 @@
             font-weight: 700;
             box-shadow: 0 0 8px rgba(169, 228, 217, 0.9); /* Brighter glow */
         }
+        
+        .dark-mode input[type="radio"]:checked + .option-label {
+             color: #1e272e; /* Dark text on light button */
+        }
+
 
         input[type="radio"] {
             display: none; 
@@ -423,11 +557,14 @@
             font-size: var(--font-l);
             font-weight: 700;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s;
         }
         
-        .encouragement.level-1 { background-color: #FFE8EB; } /* 0-50 (調淡) */
+        .encouragement.level-1 { background-color: var(--color-light-incorrect); } /* 0-50 (調淡) */
         .encouragement.level-2 { background-color: var(--color-primary); } /* 51-80 */
-        .encouragement.level-3 { background-color: #E8FBF5; } /* 81-100 (調淡) */
+        .encouragement.level-3 { background-color: var(--color-light-correct); } /* 81-100 (調淡) */
+
+        .dark-mode .encouragement.level-2 { color: #1e272e; } /* Fix text contrast for level-2 */
 
         .score-display {
             font-size: 3rem;
@@ -444,32 +581,29 @@
             padding: 20px;
             border-radius: 15px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: background-color 0.3s;
         }
 
         /* 答對底色調淡 */
         .result-item.correct {
-            background-color: #E8FBF5; /* Very Light Mint Green */
+            background-color: var(--color-light-correct); 
             border: 1px solid #7bc6b9;
         }
 
         /* 答錯底色調淡 */
         .result-item.incorrect {
-            background-color: #FFE8EB; /* Very Light Pink */
+            background-color: var(--color-light-incorrect); 
             border: 1px solid #e89fb0;
         }
         
-        .result-item-header {
-            font-weight: 700;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
         .result-detail {
             margin-top: 10px;
             padding-top: 10px;
             border-top: 1px dashed rgba(0, 0, 0, 0.2);
+        }
+        
+        .dark-mode .result-detail {
+            border-top: 1px dashed rgba(255, 255, 255, 0.3);
         }
 
         .result-detail p {
@@ -479,13 +613,28 @@
         /* 移除斜體 */
         .explanation-text {
             color: #333;
-            /* font-style: italic; Removed */
             background-color: rgba(255, 255, 255, 0.5);
             padding: 10px;
             border-radius: 8px;
             margin-top: 10px;
+            transition: background-color 0.3s, color 0.3s;
         }
         
+        .dark-mode .explanation-text {
+            background-color: #4a637d;
+            color: #ecf0f1;
+        }
+        
+        .dark-mode .result-item.correct .result-detail span[style*="color: green"] {
+            color: var(--color-correct) !important;
+        }
+        .dark-mode .result-item.incorrect .result-detail span[style*="color: green"] {
+            color: var(--color-correct) !important;
+        }
+        .dark-mode .result-item.incorrect .result-detail span[style*="color: red"] {
+            color: var(--color-incorrect) !important;
+        }
+
         /* --- Responsiveness (Mobile First) --- */
         @media (max-width: 600px) {
             .container {
@@ -556,9 +705,18 @@
                 <img src="https://i.postimg.cc/G371Yyqv/wan-zheng.png" 
                      alt="公司 Logo" 
                      style="max-width: 40px; height: auto; object-fit: contain; border-radius: 0; box-shadow: none; border: none;">
-                TIMS初階行銷企劃證照_題庫訓練
+                <!-- 標題已修改為：TIMS初階行銷企劃_題庫訓練 -->
+                TIMS初階行銷企劃_題庫訓練
             </h1>
             <div class="font-size-control">
+                <!-- NEW: Theme Toggle Button (Left of size control) -->
+                <button id="theme-toggle-btn" 
+                        class="btn btn-primary" 
+                        onclick="toggleTheme()" 
+                        style="padding: 8px 15px; font-size: 1.1rem; box-shadow: none; border: 1px solid var(--color-border);">
+                    🌙 <!-- Default icon - will be updated by JS -->
+                </button>
+                
                 <label for="font-size-select">字體大小:</label>
                 <select id="font-size-select" onchange="adjustFontSize(this.value)">
                     <option value="s">小 (S)</option>
@@ -588,9 +746,9 @@
                     <h3 style="margin-top:0; font-size: 1.1rem; color: var(--color-text-light);">題目領域</h3>
                     <div id="topic-filters" class="filter-options">
                         <input type="checkbox" id="topic-theory" name="topic" value="理論題">
-                        <label for="topic-theory" class="checkbox-label">理論題</label>
+                        <label for="topic-theory" class="checkbox-label adjustable-text">理論題</label>
                         <input type="checkbox" id="topic-practice" name="topic" value="實務題">
-                        <label for="topic-practice" class="checkbox-label">實務題</label>
+                        <label for="topic-practice" class="checkbox-label adjustable-text">實務題</label>
                     </div>
                 </div>
 
@@ -611,22 +769,22 @@
                 <div class="quiz-header">
                 </div>
                 
-                <!-- NEW: Quiz Index Navigation 測驗題號導航按鈕 -->
-                <div id="question-index-nav"></div>
-
                 <div id="quiz-card-container">
                     <!-- Quiz Card generated by JS -->
                 </div>
 
+                <!-- NEW LOCATION: 將題號導航移到題目卡片下方、操作按鈕上方 -->
+                <div id="question-index-nav"></div> 
+
                 <div class="quiz-navigation">
-                    <button id="prev-btn" class="btn btn-nav" onclick="navigateQuiz(-1)" disabled>
+                    <button id="prev-btn" class="btn btn-nav adjustable-text" onclick="navigateQuiz(-1)" disabled>
                         上一題
                     </button>
-                    <button id="next-btn" class="btn btn-nav" onclick="navigateQuiz(1)">
+                    <button id="next-btn" class="btn btn-nav adjustable-text" onclick="navigateQuiz(1)">
                         下一題
                     </button>
                     <!-- 關鍵修改：在交卷按鈕中加入圖示 (✅) -->
-                    <button id="submit-btn" class="btn btn-submit" onclick="submitQuiz()">
+                    <button id="submit-btn" class="btn btn-submit adjustable-text" onclick="submitQuiz()">
                         <span style="font-size: 1.1em; transform: translateY(1px);">✅</span> 交卷
                     </button>
                 </div>
@@ -643,7 +801,7 @@
                     <!-- Detailed results generated by JS -->
                 </div>
 
-                <button class="btn btn-primary" style="width: 100%; margin-top: 20px; display: flex; align-items: center; justify-content: center; gap: 10px;" onclick="location.reload()">
+                <button class="btn btn-primary adjustable-text" style="width: 100%; margin-top: 20px; display: flex; align-items: center; justify-content: center; gap: 10px;" onclick="location.reload()">
                     <span style="font-size: 1.2em;">🏠</span> 返回首頁重新訓練
                 </button>
             </section>
@@ -655,7 +813,7 @@
         // --- I. 資料結構 (Data Structure) ---
         // 題庫資料
         const quizData = [
-         {"chapter":"CH1","topic":"理論題","question":"根據台灣行銷科學學會的定義，「行銷」的核心本質是什麼？","A":"品牌建立","B":"價值交換","C":"產品設計","D":"顧客關係管理","answer":"B","explanation":"台灣行銷科學學會定義中，行銷的核心為「交換」與「交易」，即價值交換的過程。"},
+           {"chapter":"CH1","topic":"理論題","question":"根據台灣行銷科學學會的定義，「行銷」的核心本質是什麼？","A":"品牌建立","B":"價值交換","C":"產品設計","D":"顧客關係管理","answer":"B","explanation":"台灣行銷科學學會定義中，行銷的核心為「交換」與「交易」，即價值交換的過程。"},
 {"chapter":"CH1","topic":"理論題","question":"以下何者最能區分現代行銷與傳統銷售的觀點？","A":"企業利益優先順序","B":"僅專注商品銷售","C":"價值與關係的互動","D":"廣告推廣方式不同","answer":"C","explanation":"現代行銷強調「價值互換」與「關係建立」，而非僅以企業獲利或單向推銷為導向。"},
 {"chapter":"CH1","topic":"理論題","question":"下列何者不屬於行銷中可能交換的價值形式？","A":"商品","B":"理念","C":"資訊","D":"產線自動化","answer":"D","explanation":"行銷中的交換可涵蓋商品、服務、資訊、理念等，但「產線自動化」屬於內部營運，不是對外價值交換內容。"},
 {"chapter":"CH1","topic":"實務題","question":"消費者選擇購買 Patagonia 戶外服飾，不僅因為產品耐用，更因為品牌積極倡導「環境永續」與「修補代替丟棄」的價值。這種行為最符合哪一種「行銷價值交換」概念？","A":"理念交換","B":"金錢交換","C":"信任交換","D":"資訊交換","answer":"A","explanation":"理念交換強調品牌與消費者在價值觀上的共鳴，例如環保或公益。Patagonia 案例中，消費者購買是因為認同其「環境永續」理念，而非單純依賴品牌的品質，因此不是信任交換。"},
@@ -1568,32 +1726,64 @@
         /** 調整全文字體大小 */
         function adjustFontSize(size) {
             const root = document.documentElement;
-            switch (size) {
-                case 's': root.style.setProperty('--current-font-size', 'var(--font-s)'); break;
-                case 'm': root.style.setProperty('--current-font-size', 'var(--font-m)'); break;
-                case 'l': root.style.setProperty('--current-font-size', 'var(--font-l)'); break;
-                case 'xl': root.style.setProperty('--current-font-size', 'var(--font-xl)'); break;
-                case 'xxl': root.style.setProperty('--current-font-size', 'var(--font-xxl)'); break;
-            }
-            // 儲存設定到 localStorage
+            const sizeMap = {
+                's': 'var(--font-s)',
+                'm': 'var(--font-m)',
+                'l': 'var(--font-l)',
+                'xl': 'var(--font-xl)',
+                'xxl': 'var(--font-xxl)'
+            };
+            
+            root.style.setProperty('--current-font-size', sizeMap[size] || sizeMap['m']);
             localStorage.setItem('fontSize', size);
             
-            // 確保所有可調整字體的元素立即更新 (這是在先前版本中字體調整的即時性修正)
+            // 確保所有可調整字體的元素立即更新
             document.querySelectorAll('.adjustable-text').forEach(el => {
+                // This line is often redundant if CSS variables are set correctly, but kept for robustness
                 el.style.fontSize = getComputedStyle(root).getPropertyValue('--current-font-size');
             });
         }
+        
+        /** 切換亮色/暗色主題 */
+        function toggleTheme() {
+            const body = document.body;
+            const isDarkMode = body.classList.toggle('dark-mode');
+            
+            if (isDarkMode) {
+                localStorage.setItem('theme', 'dark');
+            } else {
+                localStorage.setItem('theme', 'light');
+            }
+            // 確保按鈕的背景色和圖示能正確更新
+            updateButtonColors();
+        }
+        
+        /** 輔助函數：更新按鈕顏色以匹配主題 */
+        function updateButtonColors() {
+            const body = document.body;
+            const isDarkMode = body.classList.contains('dark-mode');
+            const toggleBtn = document.getElementById('theme-toggle-btn');
+            
+            if (toggleBtn) {
+                // 更新圖示
+                toggleBtn.innerHTML = isDarkMode ? '☀️' : '🌙'; 
+            }
+            
+            // 當前頁面如果已經在 Quiz，需要重新渲染一次導航按鈕的 disabled 狀態，
+            // 因為 disabled 的樣式在 dark mode 下也調整了。
+            if (document.getElementById('quiz-screen').style.display !== 'none') {
+                updateNavigationButtons();
+            }
+        }
+
 
         /** 從數據中提取不重複的值 */
-        // *** 修正: 加入自訂排序函式，強制進行數字排序 ***
         function extractUniqueValues(data, key) {
             // 1. 提取不重複的章節名稱 (例如: CH1, CH10, CH2)
             const uniqueValues = [...new Set(data.map(item => item[key]))];
             
             // 2. 使用自訂比較函式進行數字排序
             return uniqueValues.sort((a, b) => {
-                // 假設章節名稱格式為 CH[數字]，例如 "CH10"
-                
                 // 提取數字部分 (移除前兩個字元 "CH"，並轉為整數)
                 const numA = parseInt(a.slice(2));
                 const numB = parseInt(b.slice(2));
@@ -1611,7 +1801,7 @@
             
             filterContainer.innerHTML = chapters.map(chapter => `
                 <input type="checkbox" id="chapter-${chapter}" name="chapter" value="${chapter}">
-                <label for="chapter-${chapter}" class="checkbox-label">${chapter}</label>
+                <label for="chapter-${chapter}" class="checkbox-label adjustable-text">${chapter}</label>
             `).join('');
             
             // 載入儲存的篩選狀態
@@ -1797,7 +1987,10 @@
                     correctAnswer: q.answer,
                     isCorrect: isCorrect,
                     explanation: q.explanation,
-                    options: { A: q.A, B: q.B, C: q.C, D: q.D }
+                    options: { A: q.A, B: q.B, C: q.C, D: q.D },
+                    // V7 關鍵新增: 儲存章節與題目領域
+                    chapter: q.chapter,
+                    topic: q.topic
                 });
             });
 
@@ -1820,18 +2013,25 @@
             
             let levelClass = 'level-1';
             let message = "需要加油！行銷企劃的基礎觀念還有些許不足，建議重新複習重點章節。";
+            let scoreIcon = '😓'; // Level 1 icon (V7 新增)
+
             if (score > 80) {
                 levelClass = 'level-3';
                 message = "恭喜！您對行銷企劃證照的知識掌握度非常高，保持這個狀態！";
+                scoreIcon = '🏆'; // Level 81-100 (V7 新增)
             } else if (score > 50) {
                 levelClass = 'level-2';
                 message = "表現不錯！已經掌握大部分重點，再加強幾個錯誤的觀念就能輕鬆通過！";
+                scoreIcon = '👍'; // Level 51-80 (V7 新增)
             }
 
             // 渲染分數和鼓勵訊息
             encouragementDiv.className = `encouragement adjustable-text ${levelClass}`;
             encouragementDiv.innerHTML = `
-                <div class="score-display">${score} 分</div>
+                <div class="score-display">
+                    <span style="margin-right: 15px; font-size: 1.2em;">${scoreIcon}</span> 
+                    ${score} 分
+                </div>
                 <p style="margin-top: 15px;">${message}</p>
                 <p style="font-size: 1rem; font-weight: 500;">答對 ${correctCount} 題 / 總共 ${total} 題</p>
             `;
@@ -1842,11 +2042,20 @@
                 
                 // 找出使用者選擇的選項內容
                 const userAnswerText = item.userAnswer ? item.options[item.userAnswer] : '未作答';
+                
+                // 調整顏色以便在深色模式下有更好的對比
+                const correctColor = document.body.classList.contains('dark-mode') ? 'var(--color-correct)' : 'green';
+                const wrongColor = document.body.classList.contains('dark-mode') ? 'var(--color-incorrect)' : 'red';
+                const defaultColor = document.body.classList.contains('dark-mode') ? 'var(--color-text-light)' : '#7f8c8d';
 
                 return `
                     <div class="result-item ${itemClass}">
                         <div class="result-item-header">
                             <span style="color: var(--color-text);">Q${item.index}. ${item.isCorrect ? '✅ 答對' : '❌ 答錯'}</span>
+                            <!-- V7 關鍵新增: 顯示章節與題目領域 -->
+                            <span style="font-size: 0.9rem; font-weight: 500; color: var(--color-text-light);">
+                                (${item.chapter} - ${item.topic})
+                            </span>
                         </div>
                         <p class="question-text adjustable-text">
                             ${item.question}
@@ -1854,12 +2063,12 @@
                         
                         <div class="result-detail adjustable-text">
                             <p style="font-weight: 600;">您的選擇 (${item.userAnswer || '-'}): 
-                                <span style="font-weight: 400; color: ${item.userAnswer ? (item.isCorrect ? 'green' : 'red') : '#7f8c8d'};">
+                                <span style="font-weight: 400; color: ${item.userAnswer ? (item.isCorrect ? correctColor : wrongColor) : defaultColor};">
                                     ${userAnswerText}
                                 </span>
                             </p>
                             <p style="font-weight: 600;">正確答案 (${item.correctAnswer}): 
-                                <span style="font-weight: 400; color: green;">
+                                <span style="font-weight: 400; color: ${correctColor};">
                                     ${item.options[item.correctAnswer]}
                                 </span>
                             </p>
@@ -1879,9 +2088,12 @@
             const msgBox = document.createElement('div');
             msgBox.style.cssText = `
                 position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-                padding: 30px; background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                padding: 30px; background: var(--color-container-bg); border-radius: 20px; 
+                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
                 z-index: 1000; text-align: center; max-width: 90%; font-family: 'Inter', sans-serif;
                 border: 3px solid var(--color-primary);
+                color: var(--color-text);
+                transition: background-color 0.3s, color 0.3s;
             `;
             msgBox.innerHTML = `
                 <p style="font-size: 1.1rem; font-weight: 600; color: var(--color-text); margin-bottom: 20px;">${message}</p>
@@ -1897,7 +2109,15 @@
             document.getElementById('font-size-select').value = savedFontSize;
             adjustFontSize(savedFontSize);
             
-            // 2. 渲染過濾器
+            // 2. 載入主題設定
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+            }
+            // 首次載入或更新按鈕圖示
+            updateButtonColors();
+
+            // 3. 渲染過濾器
             renderChapterFilters();
         }
 

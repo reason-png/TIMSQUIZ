@@ -642,12 +642,12 @@
                 width: 100%;
             }
             .main-title {
-                font-size: 1.5rem; /* 手機上縮小字體 */
+                font-size: 1.4rem; /* 關鍵調整: 標題字體進一步縮小 */
                 margin-bottom: 15px;
-                gap: 10px !important; /* 手機上縮小 Logo 間距 */
+                gap: 8px !important; /* 縮小 Logo 間距 */
             }
             .main-title img {
-                max-width: 30px; /* 手機上縮小 Logo 尺寸 */
+                max-width: 25px; /* 關鍵調整: 縮小 Logo 尺寸 */
             }
             .header {
                 flex-direction: column;
@@ -692,9 +692,9 @@
                 padding: 10px; /* 縮小內邊距 */
             }
             .index-btn {
-                width: 28px; /* 縮小寬度 */
-                height: 28px; /* 縮小高度 */
-                font-size: 0.8rem;
+                width: 25px; /* 進一步縮小寬度 */
+                height: 25px; /* 進一步縮小高度 */
+                font-size: 0.75rem; /* 進一步縮小字體 */
             }
         }
     </style>
@@ -754,7 +754,8 @@
                 </div>
 
                 <div class="training-info adjustable-text">
-                    本次訓練將從您選擇的範圍中，隨機選取 **10 題** 進行測驗。
+                    <!-- 根據使用者要求修改此處文字 -->
+                    選擇的範圍中，隨機選取 "10 題"進行測驗
                 </div>
 
                 <button id="start-btn" 
@@ -1713,7 +1714,7 @@
 {"chapter":"CH10","topic":"實務題","question":"化妝品品牌寄出EDM電子報後，特別觀察開信率與點擊優惠連結的比例，這主要是衡量哪一KPI？","A":"顧客互動","B":"顧客取得","C":"顧客維繫","D":"顧客服務","answer":"A","explanation":"EDM的開信率與點擊率反映顧客在接觸點的互動活躍度。"},
 {"chapter":"CH10","topic":"實務題","question":"在顧客關係管理分析中，常引用80／20法則，意即20%的顧客，可能貢獻80%的營收。此概念最能說明哪一個顧客關係管理KPI的重要性？","A":"顧客取得","B":"顧客維繫","C":"顧客價值","D":"顧客服務","answer":"C","explanation":"80／20法則強調少數高價值顧客對營收的關鍵貢獻，正是顧客價值評估的核心精神。"},
 {"chapter":"CH10","topic":"實務題","question":"銀行推動顧客關係管理（CRM）系統，除了追求市場佔有率與銷售成長外，更希望透過蒐集完整資料，持續追蹤顧客需求，並進一步設計個人化服務。一般而言，顧客關係管理的終極目標是：","A":"市場佔有率","B":"顧客取得","C":"銷售量","D":"建立可信賴的資料庫","answer":"D","explanation":"CRM的核心並非單純提升銷售或滿足顧客權力，而是要建立「可信賴的資料庫」。透過完整且正確的資料，企業才能深入分析顧客行為，長期維繫顧客關係，進而支撐後續的行銷決策與服務設計。"},
- ];
+];
         
         // --- II. 狀態管理 (State Management) ---
         let currentQuiz = []; // 當前測驗的 10 題

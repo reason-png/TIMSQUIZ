@@ -406,7 +406,7 @@
             box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
         }
 
-
+        /* 桌面/平板 尺寸 */
         .index-btn {
             width: 35px;
             height: 35px;
@@ -686,13 +686,14 @@
                 margin-top: 10px;
             }
 
-            /* Mobile adjustment for index buttons */
+            /* Mobile adjustment for index buttons (縮小尺寸和間距) */
             #question-index-nav {
-                gap: 5px;
+                gap: 5px; /* 縮小間距 */
+                padding: 10px; /* 縮小內邊距 */
             }
             .index-btn {
-                width: 30px;
-                height: 30px;
+                width: 28px; /* 縮小寬度 */
+                height: 28px; /* 縮小高度 */
                 font-size: 0.8rem;
             }
         }
@@ -1712,8 +1713,7 @@
 {"chapter":"CH10","topic":"實務題","question":"化妝品品牌寄出EDM電子報後，特別觀察開信率與點擊優惠連結的比例，這主要是衡量哪一KPI？","A":"顧客互動","B":"顧客取得","C":"顧客維繫","D":"顧客服務","answer":"A","explanation":"EDM的開信率與點擊率反映顧客在接觸點的互動活躍度。"},
 {"chapter":"CH10","topic":"實務題","question":"在顧客關係管理分析中，常引用80／20法則，意即20%的顧客，可能貢獻80%的營收。此概念最能說明哪一個顧客關係管理KPI的重要性？","A":"顧客取得","B":"顧客維繫","C":"顧客價值","D":"顧客服務","answer":"C","explanation":"80／20法則強調少數高價值顧客對營收的關鍵貢獻，正是顧客價值評估的核心精神。"},
 {"chapter":"CH10","topic":"實務題","question":"銀行推動顧客關係管理（CRM）系統，除了追求市場佔有率與銷售成長外，更希望透過蒐集完整資料，持續追蹤顧客需求，並進一步設計個人化服務。一般而言，顧客關係管理的終極目標是：","A":"市場佔有率","B":"顧客取得","C":"銷售量","D":"建立可信賴的資料庫","answer":"D","explanation":"CRM的核心並非單純提升銷售或滿足顧客權力，而是要建立「可信賴的資料庫」。透過完整且正確的資料，企業才能深入分析顧客行為，長期維繫顧客關係，進而支撐後續的行銷決策與服務設計。"},
-
-        ];
+ ];
         
         // --- II. 狀態管理 (State Management) ---
         let currentQuiz = []; // 當前測驗的 10 題
